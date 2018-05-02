@@ -59,3 +59,21 @@ I chose these because I want to upskill and because they are highly recommended 
 ### Testing strategy
 
 * Using Jest to write unit tests
+
+### Output
+
+```text
+22 E
+32 E
+32 N
+30 N
+30 E
+50 E
+60 E
+60 S
+61 W
+41 W
+31 W
+31 S
+33 S
+```
