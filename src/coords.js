@@ -4,7 +4,7 @@
  * {x}{y} is converted to an array of numeric values as [{x}, {y}] to be used in calculations
  * for the movement of the rover.
  * @param {string} input - A formatted string ({x}{y} {cardinal}) with unformatted co-ordinates and a cardinal.
- * @return {Object[]} A numeric array of [{x}, {y}].
+ * @return {number[]} A numeric array of [{x}, {y}].
  */
 export function extract(input) {
     if (!input) throw new Error("`input` parameter is required.");
@@ -21,8 +21,8 @@ export function extract(input) {
 /**
  * The next co-ordinate to move the rover to.
  * @param {string} cardinal - The cardinal value of N, E, S, or W where the rover is facing.
- * @param {Object[]} coord - The co-ordinate of [{x}, {y}] where the rover is stationed on.
- * @return {Object[]} The next co-ordinate of [{x}, {y}] where the rover will move to.
+ * @param {number[]} coord - The co-ordinate of [{x}, {y}] where the rover is stationed on.
+ * @return {number[]} The next co-ordinate of [{x}, {y}] where the rover will move to.
  */
 export function next(cardinal, coord) {
     if (!cardinal) throw new Error("`cardinal` parameter is required.");
