@@ -2,6 +2,13 @@
 
 A fantasy navigation system for Rovers that have been sent to Mars.
 
+## Getting started
+
+* Install node
+* Install npm
+* npm install
+* npm start run
+
 ## Instruction
 
 Mars’s surface can be thought of as a zone that is itself a two-dimensional grid of square areas.
