@@ -49,7 +49,7 @@ I chose to leverage tech that I have not used before because I want to upskill:
 * I made use of the latest ES6 features.
 * I chose [Jest](https://facebook.github.io/jest/docs/en/getting-started.html) for my testing framework.
 
-I chose these because I want to upskill and because they are highly recommended in the community 
+I chose these because I want to upskill and because they are highly recommended in the community
 
 ### Code correctness
 
