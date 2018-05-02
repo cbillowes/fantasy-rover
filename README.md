@@ -9,6 +9,14 @@ A fantasy navigation system for Rovers that have been sent to Mars.
 * npm install
 * npm start run
 
+## Input
+
+```text
+88
+12 E
+MMLMRMMRRMML
+```
+
 ## Output
 
 ```text
