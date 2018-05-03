@@ -28,7 +28,16 @@ export function move(terrain, location, commands) {
         destination = _command.execute(bounds, coords, cardinal, command);
         cardinal = _cardinal.next(cardinal, command);
         coords = _coords.next(cardinal, coords);
-        console.log(destination);
     });
     return destination;
+}
+
+export function tick(bounds, coords, cardinal, command) {
+    var coord = _coords.next(cardinal, coords);
+    return {
+        bounds: _bounds.validate(bounds, coords),
+        direction: _cardinal.next(cardinal, command),
+        x: coord[0],
+        y: coord[1]
+    }
 }

@@ -30,7 +30,7 @@ export function execute(bounds, coord, cardinal, command) {
  * Parse a single list of commands into an array.
  * Valid commands include R(ight), L(eft) and M(ove).
  * @param {string} commands - Single string containing commands for movement. No separators are expected. Example: LMRMM.
- * @return {Object[]} An array of commands to be iterated for the calculations of movement.
+ * @return {string[]} An array of commands to be iterated for the calculations of movement.
  */
 export function parseList(commands) {
     if (!commands) throw new Error("`commands` parameter is required.");
