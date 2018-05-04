@@ -1,4 +1,4 @@
-import * as parser from "./input-parser";
+import * as _rover from "./rover";
 
 var input = "88\r\n12 E\r\nMMLMRMMRRMMLM";
 var canvas = document.getElementById("cartesian-plane");
@@ -6,25 +6,39 @@ var ctx = canvas.getContext("2d");
 var cellSize = 50;
 
 export function start() {
+    var rover = _rover.parse(input);
+    var width = rover.boundsX * cellSize;
+    var height = rover.boundsY * cellSize;
     display(input);
-    tick();
-}
-
-function tick() {
-    var rover = parser.parse(input);
-    var width = rover.terrain[0] * cellSize;
-    var height = rover.terrain[1] * cellSize;
-    log(rover);
     drawBackground(width, height);
     drawGrid(width, height);
     drawRover(rover);
+
+    while (rover.commands.length > 0) {
+        rover = _rover.tick(rover);
+        drawRover(rover);
+    }
 }
 
 function drawRover(rover) {
-    var x = rover.coord[0] * cellSize;
-    var y = rover.coord[1] * cellSize;
+    var x = (rover.pointX * cellSize) + 5;
+    var y = (rover.pointY * cellSize) + 5;
+    var size = cellSize - 10;
     ctx.fillStyle = "#3498db";
-    ctx.fillRect(x, y, cellSize, cellSize);
+    ctx.fillRect(x, y, size, size);
+    log(rover.pointX, rover.pointY, rover.direction);
+
+    if (rover.direction === "N" || rover.direction === "S") {
+        ctx.moveTo(x + (size / 2), y);
+        ctx.lineTo(x + (size / 2), y + size);
+    }
+
+    if (rover.direction === "E" || rover.direction === "W") {
+        ctx.moveTo(x, y + (size / 2));
+        ctx.lineTo(x + size, y + (size / 2));
+    }
+
+    ctx.stroke();
 }
 
 function drawGrid(width, height) {
@@ -61,9 +75,9 @@ function display(input) {
     div.innerText = input;
 }
 
-function log(rover) {
+function log(pointX, pointY, direction) {
     var moves = document.getElementById("moves");
     var div = document.createElement("div");
-    div.innerText = `${rover.coord[0]}${rover.coord[1]} ${rover.cardinal}`;
+    div.innerText = `(${pointX}, ${pointY}) ${direction}`;
     moves.appendChild(div);
 }

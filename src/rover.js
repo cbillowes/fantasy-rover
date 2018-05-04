@@ -4,40 +4,48 @@ import * as _command from "./command";
 import * as _bounds from "./bounds";
 
 /**
- * Move the rover from where it's stationed to its destination based on the commands supplied.
- * @param {string} terrain - Terrain bounds: The zones have been very carefully surveyed ahead of time and are deemed
- * safe for exploration within the landing terrain bounds, as represented by a single
- * cartesian coordinate. Example (5, 5) is 55.
- * @param {string} location - Its location is based on cartesian coordinate and cardinal. The rover understands the cardinal points and can face either East (E), West. Example 5,5 W is 55 W.
- * (W), North (N) or South (S) at any given time.
- * @param {string} command - Three commands: 
- * M - Move one space forward in the direction it is facing,
- * R - rotate 90 degrees to the right
- * L - rotate 90 degrees to the left
- * @return {string} These commands will be executed by the rover and its resulting location sent
- * back to HQ.
+ * Parse given input for terrain bounds on a cartesian plane, the location and direction of the rover, and its commands.
+ * @param {string} input - Line break delimited. Example: 88\r\n12 E\r\nMMLMRMMRRMMLM.
+ * @returns {Object} - An object containing the terrain bounds, point x and y coord, cardinal direction and input commands.
  */
-export function move(terrain, location, commands) {
-    var bounds = _bounds.extract(terrain);
-    var coords = _coords.extract(location);
-    var cardinal = _cardinal.extract(location);
-    var setOfCommands = _command.parseList(commands);
-    var destination;
+export function parse(input) {
+    if (!input) throw new Error("`input` parameter is required.");
 
-    setOfCommands.forEach(command => {
-        destination = _command.execute(bounds, coords, cardinal, command);
-        cardinal = _cardinal.next(cardinal, command);
-        coords = _coords.next(cardinal, coords);
-    });
-    return destination;
+    var split = input.split("\r\n");
+    var bounds = _coords.extract(split[0]);
+    var point = _coords.extract(split[1]);
+    var result = {
+        boundsX: bounds[0],
+        boundsY: bounds[1],
+        pointX: point[0],
+        pointY: point[1],
+        direction: _cardinal.extract(split[1]),
+        commands: _command.parseList(split[2])
+    };
+    return result;
 }
 
-export function tick(bounds, coords, cardinal, command) {
-    var coord = _coords.next(cardinal, coords);
-    return {
-        bounds: _bounds.validate(bounds, coords),
-        direction: _cardinal.next(cardinal, command),
-        x: coord[0],
-        y: coord[1]
-    }
+/*
+ * Move rover by one space.
+ * @param {Object} rover - A parsed rover object.
+ * @returns {Object} - A new rover object moved one space.
+ */
+export function tick(rover) {
+    if (!rover) throw new Error("`rover` parameter is required.");
+
+    var command = rover.commands.shift();
+    var bounds = [rover.boundsX, rover.boundsY];
+    var points = [rover.pointX, rover.pointY];
+    var coord = _coords.next(rover.direction, points);
+
+    var result = {
+        withinBounds: _bounds.validate(bounds, coord),
+        boundsX: rover.boundsX,
+        boundsY: rover.boundsY,
+        pointX: coord[0],
+        pointY: coord[1],
+        direction: _cardinal.next(rover.direction, command),
+        commands: rover.commands
+    };
+    return result;
 }
