@@ -19,8 +19,10 @@ export function start() {
 }
 
 function drawRover(rover) {
+    var x = rover.coord[0] * cellSize;
+    var y = rover.coord[1] * cellSize;
     ctx.fillStyle = "#3498db";
-    ctx.fillRect(rover.coord[0], rover.coord[1], cellSize, cellSize);
+    ctx.fillRect(x, y, cellSize, cellSize);
 }
 
 function drawGrid(width, height) {
