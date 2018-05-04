@@ -6,15 +6,17 @@ var ctx = canvas.getContext("2d");
 var cellSize = 50;
 
 export function start() {
+    display(input);
+    tick();
+}
+
+function tick() {
     var rover = parser.parse(input);
     var width = rover.terrain[0] * cellSize;
     var height = rover.terrain[1] * cellSize;
-
-    display(input);
+    log(rover);
     drawBackground(width, height);
     drawGrid(width, height);
-
-    log(rover);
     drawRover(rover);
 }
 
